@@ -311,7 +311,7 @@ shape_uf |>
   theme(plot.title = element_text(face = "bold"))
 ```
 
-O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior proporção de pessoas filiadas em relação à população total. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com a maior proporção.
+O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior proporção de pessoas filiadas em relação ao total de eleitores do Estado. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com a maior proporção.
 
 #### O perfil geral das pessoas filiadas
 
