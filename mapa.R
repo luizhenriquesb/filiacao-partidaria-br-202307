@@ -1,4 +1,3 @@
-
 mapa <- shape_uf |> 
   ggplot() +
   geom_sf(aes(fill = prop_filiados)) +
@@ -7,7 +6,8 @@ mapa <- shape_uf |>
                                             keywidth = unit(8, units = "mm"),
                                             label.position = "top",
                                             title.position = "top",
-                                            reverse = FALSE)) +
+                                            reverse = FALSE,
+                                            bynrom = FALSE)) +
   theme_void() +
   labs(
     title = "Mapa da proporção de filiados por Estado",
@@ -34,8 +34,8 @@ mapa <- shape_uf |>
     legend.position = c(.90, .1),
     legend.direction = "horizontal"
   )
-  
-  
+
+
 ggsave(filename = "mapa.jpg",
        plot = mapa,
        dpi = 900)
