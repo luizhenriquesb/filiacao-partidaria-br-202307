@@ -66,7 +66,7 @@ Vamos olhar agora para alguns dados mais gerais sobre a nossa base de dados.
 
 #### Total de pessoas filiadas
 
-Abaixo temos uma tabela com o total de pessoas filiadas atualmente no Brasil. Cabe lembrar que todos os dados desta análise fazem referência ap mês de julho de 2023.
+Abaixo temos uma tabela com o total de pessoas filiadas atualmente no Brasil. Cabe lembrar que todos os dados desta análise fazem referência ao mês de julho de 2023.
 
 ```{r}
 dados |> 
