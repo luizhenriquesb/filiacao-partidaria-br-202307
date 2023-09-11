@@ -30,14 +30,14 @@ shape <- geobr::read_state(code_state = "all", year = 2010)
 
 # Criando objeto com o percentual de filiados por Estado ----
 
-prop_filiados_uf <- dados_eleitorado_total |>
+perc_filiados_uf <- dados_eleitorado_total |>
   # Agrupando por Estado e população total
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas
   summarise(total_filiados = sum(quantidade_de_filiados)) |> 
   # Criando coluna com o percentual de pessoas filiadas em relação à população
   # total do Estado
-  mutate(prop_filiados = total_filiados/quantidade_de_eleitor*100)
+  mutate(perc_filiados = total_filiados/quantidade_de_eleitor)
 
 # Adiconando as coordenadas de cada Estado ao dataset acima ----
 
@@ -47,9 +47,9 @@ shape_uf <- shape |>
   # Função para juntar as bases
   left_join(
     # Juntando a base "shape" na base "prop_filiados_uf" a partir da coluna "uf"
-    prop_filiados_uf, by = c("uf")) |>
+    perc_filiados_uf, by = c("uf")) |>
   # Selecionando somente as colunas de interesse para fazer o mapa
-  select(uf, prop_filiados, geom)
+  select(uf, perc_filiados, geom)
 
 # Função que carrega diferentes tipos de fontes
 
@@ -59,10 +59,11 @@ extrafont::loadfonts("win")
 
 # Referência: <https://r-graph-gallery.com/327-chloropleth-map-from-geojson-with-ggplot2.html>
 
-mapa <- shape_uf |> 
+shape_uf |> 
   ggplot() +
-  geom_sf(aes(fill = prop_filiados)) +
-  scale_fill_viridis_c(name = "Percentual (%)",
+  geom_sf(aes(fill = perc_filiados)) +
+  scale_fill_viridis_c(labels = scales::percent,
+                       name = "",
                        guide = guide_legend(keyheight = unit(5, units = "mm"),
                                             keywidth = unit(8, units = "mm"),
                                             label.position = "left",

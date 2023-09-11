@@ -187,18 +187,18 @@ dados_eleitorado_total |>
   # Agrupando por Estado e pela população total
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas por Estado
-  summarise(total_filiados = sum(quantidade_de_filiados)) |>
+  summarise(total_filiados = sum(quantidade_de_filiados)) |> 
   # Retirando ZZ (exterior)
   filter(uf != "ZZ") |> 
   # Fazendo o percentual de filiados em relação à pop. total do Estado
-  mutate(prop_filiados = total_filiados/quantidade_de_eleitor) |> 
+  mutate(perc_filiados = total_filiados/quantidade_de_eleitor) |> 
   # Iniciando a montagem do gráfico
   ggplot() +
   # Definindo aes
   aes(
     # Ordenando os partidos a partir do número total de pessoas filiadas
-    x = reorder(uf, +prop_filiados), 
-    y = prop_filiados) +
+    x = reorder(uf, +perc_filiados), 
+    y = perc_filiados) +
   # Definindo a geometria
   geom_col(
     # Definindo o preenchuimento pela sigla de cada UF
@@ -226,8 +226,8 @@ dados_eleitorado_total |>
   labs(
     x = "",
     y = "Total",
-    title = "Percentual de pessoas filiadas por Estado",
-    subtitle = "Em relação ao total de eleitores do Estado",
+    title = "Total de pessoas filiadas por Estado",
+    subtitle = "Percentual em relação ao total de eleitores no Estado",
     caption = "Fonte: Portal de Dados Abertos do TSE (ultima atualização: 07/2023)") +
   theme(plot.title = element_text(size = 12, face = "bold"))
 ```
@@ -267,14 +267,14 @@ shape <- geobr::read_state(code_state = "all", year = 2010)
 ###### Criando objeto com o percentual de filiados por Estado
 
 ```{r, message=FALSE, results='hide'}
-prop_filiados_uf <- dados_eleitorado_total |>
+perc_filiados_uf <- dados_eleitorado_total |>
   # Agrupando por Estado e população total
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas
   summarise(total_filiados = sum(quantidade_de_filiados)) |> 
   # Criando coluna com o percentual de pessoas filiadas em relação à população
   # total do Estado
-  mutate(prop_filiados = total_filiados/quantidade_de_eleitor*100)
+  mutate(perc_filiados = total_filiados/quantidade_de_eleitor)
 ```
 
 ###### Adicionando as coordenadas de cada Estado ao dataset acima
@@ -287,9 +287,9 @@ shape_uf <- shape |>
   # Função para juntar as bases
   left_join(
     # Juntando a base "shape" na base "prop_filiados_uf" a partir da coluna "uf"
-    prop_filiados_uf, by = c("uf")) |>
+    perc_filiados_uf, by = c("uf")) |>
   # Selecionando somente as colunas de interesse para fazer o mapa
-  select(uf, prop_filiados, geom)
+  select(uf, perc_filiados, geom)
 ```
 
 ###### Fazendo o mapa
@@ -299,13 +299,13 @@ shape_uf |>
   ggplot() +
   # Definindo a geometria do mapa
   geom_sf(
-    # Preenchendo os Estado com os valores da coluna "prop_filiados"
-    aes(fill = prop_filiados)) +
-  scale_fill_continuous(type = "viridis") +
+    # Preenchendo os Estado com os valores da coluna "perc_filiados"
+    aes(fill = perc_filiados)) +
+  scale_fill_continuous(type = "viridis", labels = scales::percent) +
   labs(
     title = "Mapa do percentual de filiados por Estado",
     subtitle = "Em relação ao total de eleitores de cada Estado",
-    fill = "Percentual (%)"
+    fill = "Percentual"
   ) +
   theme_bw() +
   theme(plot.title = element_text(face = "bold"))
