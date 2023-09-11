@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Vamos olhar agora para alguns dados mais gerais sobre a nossa base de dados.</p>
 <section id="total-de-pessoas-filiadas" class="level4">
 <h4 class="anchored" data-anchor-id="total-de-pessoas-filiadas">Total de pessoas filiadas</h4>
-<p>Abaixo temos uma tabela com o total de pessoas filiadas atualmente no Brasil. Cabe lembrar que todos os dados desta análise fazem referência ap mês de julho de 2023.</p>
+<p>Abaixo temos uma tabela com o total de pessoas filiadas atualmente no Brasil. Cabe lembrar que todos os dados desta análise fazem referência ao mês de julho de 2023.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dados <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_filiados =</span> <span class="fu">sum</span>(quantidade_de_filiados)) <span class="sc">|&gt;</span> </span>
@@ -423,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="total-de-pessoas-filiadas-por-estado" class="level4">
 <h4 class="anchored" data-anchor-id="total-de-pessoas-filiadas-por-estado">Total de pessoas filiadas por Estado</h4>
-<p>Para visualizar essa informação, é melhor verificar a <em>proporção</em> de filiados em relação ao total de eleitores do Estado, pois, caso contrário, naturalmente os estados com mais eleitores apresentariam a maior quantidade de filiados.</p>
+<p>Para visualizar essa informação, é melhor verificar o percentual de filiados em relação ao total de eleitores do Estado, pois, caso contrário, naturalmente os estados com mais eleitores apresentariam a maior quantidade de filiados.</p>
 <p>Para fazer isso, vamos adicionar o eleitorado total de cada Estado ao nosso dataset original utilizando os dados do TSE. Conforme estamos explorando os números da filiação partidária para o mês de julho de 2023, extraímos os dados relativos ao total de eleitores por Estado para o mesmo período. O conjunto de dados <em>Eleitorado mensal</em> disponível na página principal do <a href="https://sig.tse.jus.br/ords/dwapr/r/seai/sig-eleicao/home">Portal de Dados Abertos do TSE</a> fornece-nos essa informação.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>eleitorado_total <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"dados/eleitorado_mensal.csv.zip"</span>) <span class="sc">|&gt;</span> </span>
@@ -440,8 +440,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    dados, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"uf"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="visualização-gráfica-da-proporção-de-pessoas-filiadas-por-estado" class="level5">
-<h5 class="anchored" data-anchor-id="visualização-gráfica-da-proporção-de-pessoas-filiadas-por-estado">Visualização gráfica da proporção de pessoas filiadas por Estado</h5>
+<section id="visualização-gráfica-do-percentual-de-pessoas-filiadas-por-estado" class="level5">
+<h5 class="anchored" data-anchor-id="visualização-gráfica-do-percentual-de-pessoas-filiadas-por-estado">Visualização gráfica do percentual de pessoas filiadas por Estado</h5>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dados_eleitorado_total <span class="sc">|&gt;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Agrupando por Estado e pela população total</span></span>
@@ -450,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_filiados =</span> <span class="fu">sum</span>(quantidade_de_filiados)) <span class="sc">|&gt;</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retirando ZZ (exterior)</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(uf <span class="sc">!=</span> <span class="st">"ZZ"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fazendo a proporção de filiados em relação à pop. total do Estado</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fazendo o percentual de filiados em relação à pop. total do Estado</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop_filiados =</span> total_filiados<span class="sc">/</span>quantidade_de_eleitor) <span class="sc">|&gt;</span> </span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Iniciando a montagem do gráfico</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
@@ -486,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
 <span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total"</span>,</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Proporção de pessoas filiadas por Estado"</span>,</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Percentual de pessoas filiadas por Estado"</span>,</span>
 <span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Em relação ao total de eleitores do Estado"</span>,</span>
 <span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Fonte: Portal de Dados Abertos do TSE (ultima atualização: 07/2023)"</span>) <span class="sc">+</span></span>
 <span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -540,24 +540,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Veja que a média de pessoas filiadas por <strong>Estado</strong> é de cerca de 563 mil. O desvio padrão corresponde a cerca de 611 mil pessoas. A mediana nos mostra que metade dos Estado brasileiros possuem cerca de 321.397 mil pessoas filiadas ou mais.</p>
 </section>
-<section id="mapa-da-da-proporção-de-pessoas-filiadas-por-estado" class="level5">
-<h5 class="anchored" data-anchor-id="mapa-da-da-proporção-de-pessoas-filiadas-por-estado">Mapa da da proporção de pessoas filiadas por Estado</h5>
-<p>Para ajudar na visualização de quais Estado (e regiões) do Brasil a proporção de pessoas filiadas é maior ou menor, apresentamos um mapa.</p>
+<section id="mapa-da-do-percentual-de-pessoas-filiadas-por-estado" class="level5">
+<h5 class="anchored" data-anchor-id="mapa-da-do-percentual-de-pessoas-filiadas-por-estado">Mapa da do percentual de pessoas filiadas por Estado</h5>
+<p>Para ajudar na visualização de quais Estado (e regiões) do Brasil o percentual de pessoas filiadas é maior ou menor, apresentamos um mapa.</p>
 <section id="importando-base-de-dados-com-as-coordenadas-dos-estados" class="level6">
 <h6 class="anchored" data-anchor-id="importando-base-de-dados-com-as-coordenadas-dos-estados">Importando base de dados com as coordenadas dos Estados</h6>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>shape <span class="ot">&lt;-</span> geobr<span class="sc">::</span><span class="fu">read_state</span>(<span class="at">code_state =</span> <span class="st">"all"</span>, <span class="at">year =</span> <span class="dv">2010</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="criando-objeto-com-a-proporção-de-filiados-por-estado" class="level6">
-<h6 class="anchored" data-anchor-id="criando-objeto-com-a-proporção-de-filiados-por-estado">Criando objeto com a proporção de filiados por Estado</h6>
+<section id="criando-objeto-com-o-percentual-de-filiados-por-estado" class="level6">
+<h6 class="anchored" data-anchor-id="criando-objeto-com-o-percentual-de-filiados-por-estado">Criando objeto com o percentual de filiados por Estado</h6>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prop_filiados_uf <span class="ot">&lt;-</span> dados_eleitorado_total <span class="sc">|&gt;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Agrupando por Estado e população total</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(uf, quantidade_de_eleitor) <span class="sc">|&gt;</span> </span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Somando o total de pessoas filiadas</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_filiados =</span> <span class="fu">sum</span>(quantidade_de_filiados)) <span class="sc">|&gt;</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Criando coluna com a proporção de pessoas filiadas em relação à população</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Criando coluna com o percentual de pessoas filiadas em relação à população</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># total do Estado</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop_filiados =</span> total_filiados<span class="sc">/</span>quantidade_de_eleitor<span class="sc">*</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -588,9 +588,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> prop_filiados)) <span class="sc">+</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_continuous</span>(<span class="at">type =</span> <span class="st">"viridis"</span>) <span class="sc">+</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mapa da proporção de filiados por Estado"</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mapa do percentual de filiados por Estado"</span>,</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Em relação ao total de eleitores de cada Estado"</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Proporção (%)"</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Percentual (%)"</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -602,7 +602,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior proporção de pessoas filiadas em relação ao total de eleitores do Estado. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com a maior proporção.</p>
+<p>O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior percentual de pessoas filiadas em relação ao total de eleitores do Estado. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com o maior percentual.</p>
 </section>
 </section>
 </section>
