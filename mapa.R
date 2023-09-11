@@ -28,14 +28,14 @@ dados_eleitorado_total <- eleitorado_total |>
 
 shape <- geobr::read_state(code_state = "all", year = 2010)
 
-# Criando objeto com a proporção de filiados por Estado ----
+# Criando objeto com o percentual de filiados por Estado ----
 
 prop_filiados_uf <- dados_eleitorado_total |>
   # Agrupando por Estado e população total
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas
   summarise(total_filiados = sum(quantidade_de_filiados)) |> 
-  # Criando coluna com a proporção de pessoas filiadas em relação à população
+  # Criando coluna com o percentual de pessoas filiadas em relação à população
   # total do Estado
   mutate(prop_filiados = total_filiados/quantidade_de_eleitor*100)
 
@@ -62,7 +62,7 @@ extrafont::loadfonts("win")
 mapa <- shape_uf |> 
   ggplot() +
   geom_sf(aes(fill = prop_filiados)) +
-  scale_fill_viridis_c(name = "Proporção (%)",
+  scale_fill_viridis_c(name = "Percentual (%)",
                        guide = guide_legend(keyheight = unit(5, units = "mm"),
                                             keywidth = unit(8, units = "mm"),
                                             label.position = "left",
@@ -71,10 +71,10 @@ mapa <- shape_uf |>
                                             byrow = FALSE)) +
   theme_void() +
   labs(
-    title = "Mapa da proporção de filiados por Estado",
+    title = "Mapa do percentual de filiados por Estado",
     subtitle = "Em relação ao total de eleitores de cada Estado (atualizado em 07/2023)",
     caption = "Fonte: Portal de Dados Abertos | TSE",
-    fill = "Proporção (%)"
+    fill = "Percentual (%)"
   ) +
   theme(
     text = element_text(color = "#22211d"),

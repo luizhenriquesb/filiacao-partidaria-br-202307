@@ -131,7 +131,7 @@ dados_eleitorado_total <- eleitorado_total |>
     # Juntando a base "pop_total" na base "dados" a partir da coluna "uf"
     dados, by = c("uf"))
 
-##### Visualização gráfica da proporção de pessoas filiadas por Estado ----
+##### Visualização gráfica do percentual de pessoas filiadas por Estado ----
 
 dados_eleitorado_total |>
   # Agrupando por Estado e pela população total
@@ -140,7 +140,7 @@ dados_eleitorado_total |>
   summarise(total_filiados = sum(quantidade_de_filiados)) |>
   # Retirando ZZ (exterior)
   filter(uf != "ZZ") |> 
-  # Fazendo a proporção de filiados em relação à pop. total do Estado
+  # Fazendo o percentual de filiados em relação à pop. total do Estado
   mutate(prop_filiados = total_filiados/quantidade_de_eleitor) |> 
   # Iniciando a montagem do gráfico
   ggplot() +
@@ -177,7 +177,7 @@ dados_eleitorado_total |>
     x = "",
     y = "Total",
     title = "Total de pessoas filiadas por Estado",
-    subtitle = "Proporção em relação ao total de eleitores no Estado",
+    subtitle = "Percentual em relação ao total de eleitores no Estado",
     caption = "Fonte: Portal de Dados Abertos do TSE (ultima atualização: 07/2023)") +
   theme(plot.title = element_text(size = 12, face = "bold"))
 
@@ -198,20 +198,20 @@ dados |>
                format.args = list(decimal.mark = ",", big.mark = "."),
                align = "c")
 
-#### Mapa da da proporção de pessoas filiadas por Estado ----
+#### Mapa da do percentual de pessoas filiadas por Estado ----
 
 ###### Importando base de dados com as coordenadas dos Estados ----
 
 shape <- geobr::read_state(code_state = "all", year = 2010)
 
-###### Criando objeto com a proporção de filiados por Estado ----
+###### Criando objeto com o percentual de filiados por Estado ----
 
 prop_filiados_uf <- dados_eleitorado_total |>
   # Agrupando por Estado e população total
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas
   summarise(total_filiados = sum(quantidade_de_filiados)) |> 
-  # Criando coluna com a proporção de pessoas filiadas em relação à população
+  # Criando coluna com o percentual de pessoas filiadas em relação à população
   # total do Estado
   mutate(prop_filiados = total_filiados/quantidade_de_eleitor*100)
 
@@ -238,9 +238,9 @@ shape_uf |>
     aes(fill = prop_filiados)) +
   scale_fill_continuous(type = "viridis") +
   labs(
-    title = "Mapa da proporção de filiados por Estado",
+    title = "Mapa do percentual de filiados por Estado",
     subtitle = "Em relação ao total de eleitores de cada Estado",
-    fill = "Proporção (%)"
+    fill = "Percentual (%)"
   ) +
   theme_bw() +
   theme(plot.title = element_text(face = "bold"))
