@@ -159,7 +159,7 @@ Veja que a média de pessoas filiadas por **partido** é de cerca de 509 mil. O 
 
 #### Total de pessoas filiadas por Estado
 
-Para visualizar essa informação, é melhor verificar a *proporção* de filiados em relação ao total de eleitores do Estado, pois, caso contrário, naturalmente os estados com mais eleitores apresentariam a maior quantidade de filiados.
+Para visualizar essa informação, é melhor verificar o percentual de filiados em relação ao total de eleitores do Estado, pois, caso contrário, naturalmente os estados com mais eleitores apresentariam a maior quantidade de filiados.
 
 Para fazer isso, vamos adicionar o eleitorado total de cada Estado ao nosso dataset original utilizando os dados do TSE. Conforme estamos explorando os números da filiação partidária para o mês de julho de 2023, extraímos os dados relativos ao total de eleitores por Estado para o mesmo período. O conjunto de dados *Eleitorado mensal* disponível na página principal do [Portal de Dados Abertos do TSE](https://sig.tse.jus.br/ords/dwapr/r/seai/sig-eleicao/home) fornece-nos essa informação.
 
@@ -180,7 +180,7 @@ dados_eleitorado_total <- eleitorado_total |>
     dados, by = c("uf"))
 ```
 
-##### Visualização gráfica da proporção de pessoas filiadas por Estado
+##### Visualização gráfica do percentual de pessoas filiadas por Estado
 
 ```{r, message=FALSE, fig.align='center', fig.width=5, fig.height=8}
 dados_eleitorado_total |>
@@ -190,7 +190,7 @@ dados_eleitorado_total |>
   summarise(total_filiados = sum(quantidade_de_filiados)) |>
   # Retirando ZZ (exterior)
   filter(uf != "ZZ") |> 
-  # Fazendo a proporção de filiados em relação à pop. total do Estado
+  # Fazendo o percentual de filiados em relação à pop. total do Estado
   mutate(prop_filiados = total_filiados/quantidade_de_eleitor) |> 
   # Iniciando a montagem do gráfico
   ggplot() +
@@ -226,7 +226,7 @@ dados_eleitorado_total |>
   labs(
     x = "",
     y = "Total",
-    title = "Proporção de pessoas filiadas por Estado",
+    title = "Percentual de pessoas filiadas por Estado",
     subtitle = "Em relação ao total de eleitores do Estado",
     caption = "Fonte: Portal de Dados Abertos do TSE (ultima atualização: 07/2023)") +
   theme(plot.title = element_text(size = 12, face = "bold"))
@@ -254,9 +254,9 @@ dados |>
 
 Veja que a média de pessoas filiadas por **Estado** é de cerca de 563 mil. O desvio padrão corresponde a cerca de 611 mil pessoas. A mediana nos mostra que metade dos Estado brasileiros possuem cerca de 321.397 mil pessoas filiadas ou mais.
 
-##### Mapa da da proporção de pessoas filiadas por Estado
+##### Mapa da do percentual de pessoas filiadas por Estado
 
-Para ajudar na visualização de quais Estado (e regiões) do Brasil a proporção de pessoas filiadas é maior ou menor, apresentamos um mapa.
+Para ajudar na visualização de quais Estado (e regiões) do Brasil o percentual de pessoas filiadas é maior ou menor, apresentamos um mapa.
 
 ###### Importando base de dados com as coordenadas dos Estados
 
@@ -264,7 +264,7 @@ Para ajudar na visualização de quais Estado (e regiões) do Brasil a proporç�
 shape <- geobr::read_state(code_state = "all", year = 2010)
 ```
 
-###### Criando objeto com a proporção de filiados por Estado
+###### Criando objeto com o percentual de filiados por Estado
 
 ```{r, message=FALSE, results='hide'}
 prop_filiados_uf <- dados_eleitorado_total |>
@@ -272,7 +272,7 @@ prop_filiados_uf <- dados_eleitorado_total |>
   group_by(uf, quantidade_de_eleitor) |> 
   # Somando o total de pessoas filiadas
   summarise(total_filiados = sum(quantidade_de_filiados)) |> 
-  # Criando coluna com a proporção de pessoas filiadas em relação à população
+  # Criando coluna com o percentual de pessoas filiadas em relação à população
   # total do Estado
   mutate(prop_filiados = total_filiados/quantidade_de_eleitor*100)
 ```
@@ -303,15 +303,15 @@ shape_uf |>
     aes(fill = prop_filiados)) +
   scale_fill_continuous(type = "viridis") +
   labs(
-    title = "Mapa da proporção de filiados por Estado",
+    title = "Mapa do percentual de filiados por Estado",
     subtitle = "Em relação ao total de eleitores de cada Estado",
-    fill = "Proporção (%)"
+    fill = "Percentual (%)"
   ) +
   theme_bw() +
   theme(plot.title = element_text(face = "bold"))
 ```
 
-O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior proporção de pessoas filiadas em relação ao total de eleitores do Estado. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com a maior proporção.
+O mapa acima permite visualizar com mais facilidade quais Estados e regiões do Brasil possuem a maior percentual de pessoas filiadas em relação ao total de eleitores do Estado. Facilmente identificamos, por exemplo, que Tocantins e Amapá são os Estados com o maior percentual.
 
 #### O perfil geral das pessoas filiadas
 
