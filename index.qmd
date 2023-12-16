@@ -6,6 +6,8 @@ format: html
 editor: visual
 ---
 
+::: {style="text-align: justify"}
+
 ### Introdução
 
 Esta é uma análise dos dados sobre a filiação partidária no Brasil. A base utilizada foi extraída diretamente do [Portal de Dados Abertos do TSE](https://sig.tse.jus.br/ords/dwapr/r/seai/sig-eleicao/home), que disponibiliza uma série de informações sobre as eleições brasileiras e o eleitorado.
@@ -474,3 +476,6 @@ dados |>
     # Colocando a escala em números
     labels = scales::number)
 ```
+
+
+:::
